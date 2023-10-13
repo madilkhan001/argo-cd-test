@@ -1,18 +1,32 @@
-apiVersion: argoproj.io/v1alpha1
-kind: Application
+apiVersion: apps/v1
+kind: Deployment
 metadata:
   name: node-alpine-app
-  namespace: argocd 
 spec:
-  project: default  
-  source:
-    repoURL: https://github.com/madilkhan001/argo-cd-test
-    targetRevision: HEAD
-    path: /
-  destination:
-    server: 'https://kubernetes.default.svc'
-    namespace: default
-  syncPolicy:
-    automated:
-      prune: true 
-      selfHeal: true
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-alpine-app
+  template:
+    metadata:
+      labels:
+        app: node-alpine-app
+    spec:
+      containers:
+      - name: node-alpine-container
+        image: adildot68/node-argocd:1.0  # Adjust the image name
+        ports:
+        - containerPort: 8007
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-alpine-service
+spec:
+  selector:
+    app: node-alpine-app
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8007
+  type: NodePort
