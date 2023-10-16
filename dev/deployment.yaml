@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-alpine-container
-        image: adildot68/node-argocd:1.0  # Adjust the image name
+        image: adildot68/node-argocc:1.0  # Adjust the image name --> adildot68/node-argocd:1.0 
         ports:
         - containerPort: 8007
 ---
